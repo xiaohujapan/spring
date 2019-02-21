@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Spring</groupId>
+  <artifactId>SpringBoot-Sample</artifactId>
+  <version>1.0.1</version>
+  <packaging>war</packaging>
+  
+  <name>SpringBoot サンプルプロジェクト</name>
+  <description>SpringBoot サンプルプロジェクト</description>
+  
+  <build>
+	 <plugins>
+	 	<!-- 「web.xml is missing and <failOnMissingWebXml> is set to true」エラーの対応 -->
+		<plugin>
+		  <artifactId>maven-war-plugin</artifactId>
+		  <version>3.0.0</version>
+		</plugin>
+		<!-- JDｋはデフォルトは「1.5」の対応 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+				<compilerVersion>1.8</compilerVersion>
+			</configuration>
+		</plugin>
+ 	 </plugins>
+  </build>
+ 	 
+  <properties>
+	<!-- ソースコードのエンコーディング -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- mainメソッドのあるクラスを明示的に指定 -->
+    <start-class>org.dxh.spring.website.CoreApplication</start-class>
+   <!--  Javaのバージョンの指定 -->
+   <java.version>1.8</java.version>
+  </properties>
+</project>

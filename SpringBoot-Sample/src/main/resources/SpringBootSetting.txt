@@ -1,0 +1,27 @@
+1.「pom.xml」ファイルで「web.xml is missing and <failOnMissingWebXml> is set to true」エラーの対応
+・下記のプラグインを追加する。
+<plugin>
+  <artifactId>maven-war-plugin</artifactId>
+  <version>3.0.0</version>
+</plugin>
+
+Hint for release 3.0.0
+The goal war:manifest has been removed cause it violated the principle generating files into src/ folder. Furthermore everything can be done by using an appropriate configuration for the war:war archive.
+The default value for failOnMissingWebXml has been changed from true to false.
+
+2.Mavenプロジェクトを作成する時、JDｋはデフォルトは「1.5」の対応
+・下記のプラグインを追加する。
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<configuration>
+		<source>1.8</source>
+		<target>1.8</target>
+		<compilerVersion>1.8</compilerVersion>
+	</configuration>
+</plugin>
+
+3.[properties]ファイルで文字化け
+「Window」⇒「Preferences」⇒「General」⇒「Content Types」⇒「Text」⇒「Java Properties File」
+Default encodingは「UTF-8」に変更する
+
