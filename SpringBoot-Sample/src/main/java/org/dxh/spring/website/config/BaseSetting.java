@@ -1,26 +1,26 @@
 package org.dxh.spring.website.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource("classpath:properties/base.properties")
-@ConfigurationProperties(prefix = "base")
 public class BaseSetting {
-	private String mode;
+	@Value("${base.mode}")
+	private String baseMode;
 
-	public String getMode() {
-		return mode;
+	public String getBaseMode() {
+		return baseMode;
 	}
 
-	public void setMode(String mode) {
-		this.mode = mode;
+	public void setBaseMode(String baseMode) {
+		this.baseMode = baseMode;
 	}
 
 
 	public String toString() {
-		return "BaseSetting{" + "mode=" + mode + "}";
+		return "BaseSetting{" + "baseMode=" + baseMode + "}";
 	}
 	
 }
