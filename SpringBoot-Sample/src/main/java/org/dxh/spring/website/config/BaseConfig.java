@@ -5,8 +5,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:properties/base.properties")
-public class BaseSetting {
+@PropertySource(value= {"classpath:properties/base.properties"})
+public class BaseConfig {
 	@Value("${base.mode}")
 	private String baseMode;
 
@@ -17,10 +17,4 @@ public class BaseSetting {
 	public void setBaseMode(String baseMode) {
 		this.baseMode = baseMode;
 	}
-
-
-	public String toString() {
-		return "BaseSetting{" + "baseMode=" + baseMode + "}";
-	}
-	
 }
