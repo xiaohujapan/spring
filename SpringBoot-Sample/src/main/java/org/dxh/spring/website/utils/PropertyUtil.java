@@ -5,7 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class PropertyUtil {
+	private static String BASE_PROPERTIES_FILE = "properties/base.properties";
+	
 	private static Properties props;
     static{
         loadProps();
@@ -15,23 +20,22 @@ public class PropertyUtil {
         props = new Properties();
         InputStream in = null;
         try {
-            in = PropertyUtil.class.getClassLoader().getResourceAsStream("jdbc.properties");
+            in = PropertyUtil.class.getClassLoader().getResourceAsStream(BASE_PROPERTIES_FILE);
             props.load(in);
         } catch (FileNotFoundException e) {
-           // logger.error("jdbc.properties文件未找到");
+        	log.error("ファイル「"+BASE_PROPERTIES_FILE + "」存在しておりません！");
         } catch (IOException e) {
-            //logger.error("出现IOException");
+        	log.error("IOエラー:" + e.toString());
         } finally {
             try {
                 if(null != in) {
                     in.close();
                 }
             } catch (IOException e) {
-                //logger.error("jdbc.properties文件流关闭出现异常");
+            	log.error("ファイル「"+BASE_PROPERTIES_FILE + "」クローズエラー");
             }
         }
-        //logger.info("加载properties文件内容完成...........");
-        //logger.info("properties文件内容：" + props);
+        log.debug("ファイル「" + BASE_PROPERTIES_FILE + "」：" + props);
     }
 
     public static String getProperty(String key){

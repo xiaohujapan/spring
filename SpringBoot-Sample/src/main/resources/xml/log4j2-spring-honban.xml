@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<Configuration> に設定する属性。
+    log4j2自身のログを出力したいときは、statusにログレベルを設定する。
+	 monitorInterval を指定する(単位は秒)と、アプリケーションを終了させずに、指定した間隔で設定の変更を読む
+-->
+<Configuration status="WARN" monitorInterval="30">
+    <!--↓ ↓設定ファイル内で使用するプロパティを定義できる。何度も使うログ出力パターンやログファイルパスなどを、変数として外出しにするような場合に使う。
+    	設定したプロパティを使う場合は、${prop1} のように書く。
+    　　　　　例：	<Property name="prop1">prop1に設定する値</Property>　設定したプロパティを使う場合は、${prop1} のように書く。
+    　　　　　システムのプロパティを使いたいときは、${sys:propertyname} のように、プロパティ名の前にコロンで区切ったプレフィックスを付ける
+	    　例えば、Tomcatのインストールディレクトリパスをプロパティとして使いたい場合は、
+	　　　${sys:catalina.base} のように指定する。
+	　　　Javaのシステムプロパティは${sys:propertyname} で指定する。
+	　　OSの環境変数は${env:propertyname} で指定する。
+    　　-->
+    <Properties>
+    	<!-- ↓↓↓　[%d{yyyy-MM-dd HH:mm:ss.SSS}] : %dは日時。%dateでも可。{}の中に日時の形式を指定する。この例だと[2015-01-01 12:34:56.789]のように出力される。
+    		%-5p : %pはログレベル。%levelでも可。-5は書式指定で、この場合ログレベルが左詰めで5文字分出力される。例えば、ログレベルがinfoの場合は、INFO＋空白1文字が出力される。
+    		%t : %tはスレッド名。%threadでも可。
+    		%C : %C(大文字)は完全修飾クラス名。%classでも可。
+    		%M : %Mはメソッド名。%methodでも可。
+    		%F : %Fはソースファイル名。%fileでも可。
+    		%L : %Lはソースの行数。%lineでも可。
+    	 -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %t %C{3}.%M(%F:%L) %m%n</Property>
+        <Property name="APP_LOG_ROOT">D:\\log_test</Property>
+    </Properties>
+     
+    <Appenders>
+		<!-- name:この ConsoleAppender の名前を付ける。このあと出てくる Loggers で使う。
+		     target:"SYSTEM_OUT" か "SYSTEM_ERR" を指定する。SYSTEM_OUT は System.out にログを出力。
+		     		SYSTEM_ERR は System.err に出力する。デフォルトは"SYSEM_ERR"。
+		 -->
+		<Console name="stdout" target="SYSTEM_OUT" follow="true">
+		    <PatternLayout pattern="${LOG_PATTERN}"/>
+		</Console>
+
+        <!-- ログをファイルに出力する。設定した条件が満たされると、ログの出力先が別のファイルに切り替わる。
+        	RollingFileAppenderの属性は name, fileName, filePattern を指定する(これ以外の属性もある)。
+        	さらにサブノードで TriggingPolicy, RolloverStrategyを指定する。 
+        	name : この RollingFileAppender の名前を付ける。このあと出てくる Loggers で使う
+        	fileName : ログを出力するファイルパスを記述する。 
+        	filePattern : 過去のログファイルのアーカイブ時のファイルパスを記述する。
+        	%d{}は日付。時刻も書式指定可能。%iはファイルの枝番
+        	。拡張子は".gz"か".zip"を指定すると圧縮する。
+        	-->
+        <RollingFile name="traceLog" fileName="${APP_LOG_ROOT}/app-trace.log"
+            filePattern="${APP_LOG_ROOT}/app-trace-%d{yyyy-MM-dd}.gz" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <!-- Policies:ログファイルが切り替わる方針を設定する。以下の3つから、1つ以上を組み合わせて使う。
+            	<OnStartupTriggeringPolicy /> : ログファイルが現在のJVMの開始時刻より古い場合、ロールオーバーする。つまりJVM開始時にロールオーバーするということ。
+            	<SizeBasedTriggeringPolicy size="20 MB" /> : ログファイルが指定したサイズに達した時にロールオーバーする。指定できる単位は、KB, MB, GB。
+            	<TimeBasedTriggeringPolicy /> : これで日付が変わった時にロールオーバーする。こいつの属性である interval と modulate はあとで調べる。
+             -->
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy:ロールオーバーファイルの番号付けや圧縮率を指定する 
+            	min : 枝番の最小の数値。デフォルトは1。
+            	max : 枝番の最大の数値。ロールオーバーファイルの数がこの数値を超えると、古いロールオーバーファイルは削除される。
+            	compressionLevel : ロールオーバーファイルの拡張子がzipの場合に有効。0-9を指定可能。0は圧縮なし。数値が大きいほど高圧縮率。-->
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>     
+    </Appenders>
+ 	
+ 	<!-- ログを出力するJavaパッケージ、ログレベル、ログの出力先を指定する。 
+ 	     name : ログを出力したいJavaパッケージ名を指定する。
+ 	     level : 出力するログレベル。
+ 	     additivity : 上位のロガーにもログを出力するかどうか。デフォルトはtrue。
+ 	     			  なんだか同じログが複数回出力されているなあ(つまり指定したロガーとその上位のロガーで同じログを出力している)、と思ったらfalseに設定する。
+ 	     AppenderRef:ConsoleAppender や RollingFileAppender のnameを指定する。複数の Appender にログを出力したい場合は、<AppenferRef> タグを必要な分だけ記述する。
+ 	     -->
+    <Loggers>
+        <Logger name="com.sample.controller" additivity="false" level="debug">
+            <AppenderRef ref="traceLog" />
+            <AppenderRef ref="stdout" />
+        </Logger>
+                 
+        <Root level="info">
+            <AppenderRef ref="traceLog"/>
+            <AppenderRef ref="stdout" />
+        </Root>
+    </Loggers>
+ 
+</Configuration>
