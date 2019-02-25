@@ -13,15 +13,19 @@ public class PropertyUtil {
 	
 	private static Properties props;
     static{
-        loadProps();
+    	loadBaseProps();
     }
 
-    synchronized static private void loadProps(){
-        props = new Properties();
+    synchronized static private void loadBaseProps(){
+        props = getProperties(BASE_PROPERTIES_FILE);
+    }
+    
+    public static Properties getProperties(String fileName){
+    	Properties properties = new Properties();
         InputStream in = null;
         try {
-            in = PropertyUtil.class.getClassLoader().getResourceAsStream(BASE_PROPERTIES_FILE);
-            props.load(in);
+            in = PropertyUtil.class.getClassLoader().getResourceAsStream(fileName);
+            properties.load(in);
         } catch (FileNotFoundException e) {
         	log.error("ファイル「"+BASE_PROPERTIES_FILE + "」存在しておりません！");
         } catch (IOException e) {
@@ -35,19 +39,20 @@ public class PropertyUtil {
             	log.error("ファイル「"+BASE_PROPERTIES_FILE + "」クローズエラー");
             }
         }
-        log.debug("ファイル「" + BASE_PROPERTIES_FILE + "」：" + props);
+        log.debug("ファイル「" + fileName + "」：" + properties);
+        return properties;
     }
 
     public static String getProperty(String key){
         if(null == props) {
-            loadProps();
+        	loadBaseProps();
         }
         return props.getProperty(key);
     }
 
     public static String getProperty(String key, String defaultValue) {
         if(null == props) {
-            loadProps();
+        	loadBaseProps();
         }
         return props.getProperty(key, defaultValue);
     }
