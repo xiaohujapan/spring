@@ -33,3 +33,30 @@ https://projectlombok.org/setup/eclipse
 ③「Install/Update」ボタンを押す
 ④「Help」⇒「About Eclipse IDE」で「Lombok」を確認する
 
+5.JSPサポートの追加
+①「application.properties」ファイルに下記の追加
+spring.mvc.view.suffix=.jsp
+spring.mvc.view.prefix=/WEB-INF/jsp/
+
+②JSPサポートのプラグインを追加する
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+③SpringbootServletInitalizerを継承する
+⑤webapp下に「WEB-INF」「jsp」フォルダの追加
