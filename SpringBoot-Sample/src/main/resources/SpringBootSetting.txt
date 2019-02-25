@@ -60,3 +60,12 @@ spring.mvc.view.prefix=/WEB-INF/jsp/
     
 ③SpringbootServletInitalizerを継承する
 ⑤webapp下に「WEB-INF」「jsp」フォルダの追加
+
+
+6.　　自動リロードの設定,下記のプラグインを追加する
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+    	</dependency>
+    	
+

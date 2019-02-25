@@ -39,6 +39,13 @@
 		</dependency>
 		<!--↑↑↑log4j2の設定 ↑↑↑-->
 		
+		<!--↓↓↓自動リロードの設定↓↓↓-->
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+    	</dependency>
+		<!--↑↑↑自動リロードの設定↑↑↑-->
+		
 		<!-- ↓↓↓JSPサポートの設定↓↓↓ -->
 		<dependency>
 	      <groupId>javax.servlet</groupId>
