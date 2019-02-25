@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
 <!--<Configuration> に設定する属性。
     log4j2自身のログを出力したいときは、statusにログレベルを設定する。
 	 monitorInterval を指定する(単位は秒)と、アプリケーションを終了させずに、指定した間隔で設定の変更を読む
