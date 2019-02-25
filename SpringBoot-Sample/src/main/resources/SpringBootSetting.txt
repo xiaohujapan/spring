@@ -25,3 +25,11 @@ The default value for failOnMissingWebXml has been changed from true to false.
 「Window」⇒「Preferences」⇒「General」⇒「Content Types」⇒「Text」⇒「Java Properties File」
 Default encodingは「UTF-8」に変更する
 
+4.lombokを使うとき、「log cannot be resolved」エラー
+https://projectlombok.org/setup/eclipse
+①「lombok.jar」ファイルをダウンロードして、「Eclipse」のフォルドに入れる
+②「CMD」でコマンドを開ける、項番２のファイルを実行する
+例：D:\eclipse\jee-oxygen\eclipse>java -jar lombok.jar
+③「Install/Update」ボタンを押す
+④「Help」⇒「About Eclipse IDE」で「Lombok」を確認する
+
