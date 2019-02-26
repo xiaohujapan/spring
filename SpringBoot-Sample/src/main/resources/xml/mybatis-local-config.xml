@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"    
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">   
+<configuration>  
+	<settings>  
+		<setting name="logImpl" value="LOG4J2"/>
+	</settings>
+    <environments default="masterDB">  
+    	<!-- 各環境のID -->
+        <environment id="masterDB">  
+        	<!-- トランザクションマネージャーの設定 -->
+            <transactionManager type="JDBC" />  
+            <!-- データソースの設定  -->
+            <!-- 
+            UNPOOLED – このデータソースは、リクエストごとに接続のオープン／クローズを実行します。 少々遅いですが、即時の接続を必要としないシンプルなアプリケーションの場合は良い選択肢です。
+            POOLED – このデータソースは新規接続開始時に必要となる初期接続と認証の時間を省くため JDBC 接続をプールします。 Web アプリケーションでは応答速度向上のために良く使われる設定です。
+            JNDI – JNDI 経由でデータソースを取得する EJB やアプリケーションサーバーと併用することを想定したデータソースです。 設定に必要なプロパテイは２つだけです。
+             -->
+            <dataSource type="POOLED">  
+                <!-- http://www.mybatis.org/mybatis-3/ja/configuration.html#environments -->
+                <!-- 同時にプールされる接続数の最大値です。 デフォルト: 10 -->
+                <property name="poolMaximumActiveConnections" value="10" />
+                <!-- 同時にプールされるアイドル接続数の最大値です。 --> 
+                <property name="poolMaximumIdleConnections" value="10" />  
+                <!--プールされた接続が足りなくなった場合、使用中の接続でこの時間を経過しても戻されていない接続があれば強制的に切断されます。 デフォルト: 20000ms （20秒）  -->
+                <property name="poolMaximumCheckoutTime" value="20000" />  
+                <!-- 接続の取得に長時間を要した場合にログを出力し、接続の再取得を試みる機会を与えるための低レベルの設定です（プールが誤って設定された場合、無限に待機状態となってしまうのを防ぐため）。 デフォルト: 20000ms （20秒） -->
+                <property name="poolTimeToWait" value="20000" />  
+                <!-- プールされた接続が正常で、リクエストを受け付けられる状態にあるかどうか確認するためにデータベースに送信される ping クエリを設定します。 デフォルトは "NO PING QUERY SET" で、一般的なドライバーであれば問い合わせは失敗し、適切なエラーメッセージが出力されるはずです。 -->
+                <property name="poolPingQuery" value="NO PING QUERY SET" /> 
+                <!-- ping クエリの有効／無効を設定します。有効化した場合は poolPingQuery に適切な SQL 文（できるだけ軽いもの）を指定する必要があります。 デフォルト: false -->
+                <property name="poolPingEnabled" value="false" /> 
+                <!-- poolPingQuery が実行されるまでの時間を設定します。 データベース接続がタイムアウトするまでの時間に合わせて設定することで、必要以上に ping クエリが実行されるのを防ぎます。 デフォルト: 0（poolPingEnabled が true の場合、すべての接続に対して毎回 ping が実行されます） -->
+                <property name="poolPingConnectionsNotUsedFor" value="0" />
+            </dataSource>  
+        </environment>  
+        <environment id="slaveDB">  
+            <transactionManager type="JDBC" />  
+            <dataSource type="POOLED">  
+                <!-- http://www.mybatis.org/mybatis-3/ja/configuration.html#environments -->
+                <!-- 同時にプールされる接続数の最大値です。 デフォルト: 10 -->
+                <property name="poolMaximumActiveConnections" value="100" />
+                <!-- 同時にプールされるアイドル接続数の最大値です。 --> 
+                <property name="poolMaximumIdleConnections" value="20" />  
+                <!--プールされた接続が足りなくなった場合、使用中の接続でこの時間を経過しても戻されていない接続があれば強制的に切断されます。 デフォルト: 20000ms （20秒）  -->
+                <property name="poolMaximumCheckoutTime" value="20000" />  
+                <!-- 接続の取得に長時間を要した場合にログを出力し、接続の再取得を試みる機会を与えるための低レベルの設定です（プールが誤って設定された場合、無限に待機状態となってしまうのを防ぐため）。 デフォルト: 20000ms （20秒） -->
+                <property name="poolTimeToWait" value="20000" />  
+                <!-- プールされた接続が正常で、リクエストを受け付けられる状態にあるかどうか確認するためにデータベースに送信される ping クエリを設定します。 デフォルトは "NO PING QUERY SET" で、一般的なドライバーであれば問い合わせは失敗し、適切なエラーメッセージが出力されるはずです。 -->
+                <property name="poolPingQuery" value="NO PING QUERY SET" /> 
+                <!-- ping クエリの有効／無効を設定します。有効化した場合は poolPingQuery に適切な SQL 文（できるだけ軽いもの）を指定する必要があります。 デフォルト: false -->
+                <property name="poolPingEnabled" value="false" /> 
+                <!-- poolPingQuery が実行されるまでの時間を設定します。 データベース接続がタイムアウトするまでの時間に合わせて設定することで、必要以上に ping クエリが実行されるのを防ぎます。 デフォルト: 0（poolPingEnabled が true の場合、すべての接続に対して毎回 ping が実行されます） -->
+                <property name="poolPingConnectionsNotUsedFor" value="0" />
+            </dataSource>  
+        </environment>
+    </environments>  
+    <mappers>
+    	<package name="org.dxh.spring.website.mapper"/>
+    </mappers>
+</configuration>  
