@@ -1,16 +1,16 @@
 package org.dxh.spring.website;
 
 import org.dxh.spring.website.utils.CommonUtil;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
-@SpringBootApplication
+@MapperScan(basePackages = "org.dxh.spring.website.mapper")
+@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class},scanBasePackages = "org.dxh.spring.website")
 public class CoreApplication extends SpringBootServletInitializer{
 	
 	@Override
@@ -23,7 +23,6 @@ public class CoreApplication extends SpringBootServletInitializer{
 		appliaction.setDefaultProperties(CommonUtil.getApplicationProperties());
 		appliaction.setBannerMode(Banner.Mode.OFF);
 		appliaction.run(args);
-		log.info("サービス　Start!");
 	}
 	 
 }

@@ -2,24 +2,31 @@ package org.dxh.spring.website.service.impl;
 
 import java.util.List;
 
-import org.dxh.spring.website.annotation.TargetDataSource;
-import org.dxh.spring.website.configuration.DataSourceKey;
+import org.dxh.spring.website.annotation.MyDataSource;
+import org.dxh.spring.website.constants.DataSourceType;
 import org.dxh.spring.website.entity.umajin.UserMaster;
 import org.dxh.spring.website.mapper.umajin.UserMasterMapper;
 import org.dxh.spring.website.service.UserMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("userMaster")
+@Service
 public class UserMasterServiceImpl implements UserMasterService{
+	 
 	@Autowired
     private UserMasterMapper userMasterMapper;
 	
-	@TargetDataSource(dataSourceKey = DataSourceKey.DB_SLAVE)
-	public List<UserMaster> listAll(){
-		
+	@MyDataSource(DataSourceType.Master)
+	//@Transactional
+	public List<UserMaster> listMasterAll(){
+		return userMasterMapper.selectByExample(null);
+	};
+	
+	@MyDataSource(DataSourceType.Slave)
+	public List<UserMaster> listSlaveAll(){
 		return userMasterMapper.selectByExample(null);
 	};
 }
+
 
 
