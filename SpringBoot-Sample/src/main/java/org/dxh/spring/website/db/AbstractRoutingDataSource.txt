@@ -1,0 +1,63 @@
+【AbstractRoutingDataSource】
+org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource
+ 「应用场景」
+Abstract {@link javax.sql.DataSource} implementation that routes {@link #getConnection()}
+calls to one of various target DataSources based on a lookup key. The latter is usually
+(but not necessarily) determined through some thread-bound transaction context.
+
+getConnection()通过lookup key键对不同目标数据源的调用，一般是通过(但不一定)某些线程绑定的事物上下文来实现。
+通过这我们知道可以实现： 
+- 多数据源的动态切换，在程序运行时，把数据源数据源动态织入到程序中，灵活的进行数据源切换。 
+- 基于多数据源的动态切换，我们可以实现读写分离，这么做缺点也很明显，无法动态的增加数据源。
+
+「工作原理」
+DynamicDataSource继承AbstractRoutingDataSource类，并实现了determineCurrentLookupKey()方法。
+public class DynamicDataSource extends AbstractRoutingDataSource{
+    @Override
+    protected Object determineCurrentLookupKey() {
+        return DataSourceContextHolder.getDataSourceType();
+    }
+
+}
+
+配置的多个数据源会放在AbstractRoutingDataSource的 targetDataSources和defaultTargetDataSource中，
+然后通过afterPropertiesSet()方法将数据源分别进行复制到resolvedDataSources和resolvedDefaultDataSource中
+public void afterPropertiesSet() {
+    if (this.targetDataSources == null) {
+        throw new IllegalArgumentException("Property 'targetDataSources' is required");
+    }
+    this.resolvedDataSources = new HashMap<Object, DataSource>(this.targetDataSources.size());
+    for (Map.Entry<Object, Object> entry : this.targetDataSources.entrySet()) {
+        Object lookupKey = resolveSpecifiedLookupKey(entry.getKey());
+        DataSource dataSource = resolveSpecifiedDataSource(entry.getValue());
+        this.resolvedDataSources.put(lookupKey, dataSource);
+    }
+    if (this.defaultTargetDataSource != null) {
+        this.resolvedDefaultDataSource = resolveSpecifiedDataSource(this.defaultTargetDataSource);
+    }
+}
+
+AbstractRoutingDataSource的getConnection()的方法的时候，先调用determineTargetDataSource()方法返回DataSource在进行getConnection()。
+protected DataSource determineTargetDataSource() {
+    Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
+    Object lookupKey = determineCurrentLookupKey();
+    DataSource dataSource = this.resolvedDataSources.get(lookupKey);
+    if (dataSource == null && (this.lenientFallback || lookupKey == null)) {
+        dataSource = this.resolvedDefaultDataSource;
+    }
+    if (dataSource == null) {
+        throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
+    }
+    return dataSource;
+}
+通过实现的determineCurrentLookupKey()方法返回了lookupKey，根绝配置的key就获取到对应的数据源达到切换动态切换的功能。
+
+「AbstractRoutingDataSource 事物」
+只支持单库事务，也就是说切换数据源要在开启事务之前执行。 
+spring DataSourceTransactionManager进行事务管理，开启事务，会将数据源缓存到DataSourceTransactionObject对象中进行后续的commit rollback等事务操作。
+
+
+「JP」
+「AbstractRoutingDataSourceの実装」
+AbstractRoutingDataSourceを拡張して作成したDataSourceを、通常のデータソースと同じように使用することでデータソースの動的な切り替えが実現できる。
+

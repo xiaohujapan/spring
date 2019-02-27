@@ -95,20 +95,10 @@
   
   <build>
 	 <plugins>
-	 	<!-- 「web.xml is missing and <failOnMissingWebXml> is set to true」エラーの対応 -->
-		<plugin>
-		  <artifactId>maven-war-plugin</artifactId>
-		</plugin>
-		<!-- JDｋはデフォルトは「1.5」の対応 -->
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<configuration>
-				<source>1.8</source>
-				<target>1.8</target>
-				<compilerVersion>1.8</compilerVersion>
-			</configuration>
-		</plugin>
+        <plugin>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
  	 </plugins>
   </build>
  	 
