@@ -1,27 +1,31 @@
-package org.dxh.spring.website.db;
+package org.dxh.spring.website.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.sql.DataSource;
+
 import org.dxh.spring.website.constants.DataSourceType;
+import org.dxh.spring.website.db.DynamicDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Configuration
 public class DataSourceConfig {
-	@Bean(name = "master")
+	@Bean(name = "db_master")
 	@ConfigurationProperties(prefix = "multiple.datasource.master") 
 	public DataSource dataSource1() {
 		log.info("Master-DB");
 		return DataSourceBuilder.create().build();
 	}
 
-	@Bean(name = "slave")
+	@Bean(name = "db_slave")
 	@ConfigurationProperties(prefix = "multiple.datasource.slave") 
 	public DataSource dataSource2() {
 		log.info("Slave-DB");
@@ -36,8 +40,8 @@ public class DataSourceConfig {
 		DataSource slave = dataSource2();
 		dynamicDataSource.setDefaultTargetDataSource(master);	
 		Map<Object,Object> map = new HashMap<>();
-		map.put(DataSourceType.Master.getName(), master);
-		map.put(DataSourceType.Slave.getName(), slave);
+		map.put(DataSourceType.DB_Master.getName(), master);
+		map.put(DataSourceType.DB_Slave.getName(), slave);
 		dynamicDataSource.setTargetDataSources(map);			
 		return dynamicDataSource;
 	}

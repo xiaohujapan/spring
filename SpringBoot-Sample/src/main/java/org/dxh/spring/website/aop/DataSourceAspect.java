@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DataSourceAspect {
 	
-	@Pointcut("execution(* net.umajin.web.service..*.*(..))")
+	@Pointcut("execution(* org.dxh.spring.website.service..*.*(..))")
 	public void aspect() { }
 	
 	@Before("aspect()")

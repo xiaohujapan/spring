@@ -11,6 +11,6 @@ import org.dxh.spring.website.constants.DataSourceType;
 @Target(ElementType.METHOD) 
 public @interface MyDataSource {
 
-	DataSourceType value() default DataSourceType.Master;	
+	DataSourceType value() default DataSourceType.DB_Master;	
 	
 }
