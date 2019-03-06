@@ -2,9 +2,13 @@ package org.dxh.spring.website.constants;
 
 public enum DataSourceType {
 	//　　マスタDB
-	Master("master"),
+	DB_Master("db_master"),
 	//　　スレーブDB
-	Slave("slave");
+	DB_Slave("db_slave"),
+	// メールDB
+	DB_MAIL("db_mail"),
+	// アクセスDB
+	DB_ACCESS("db_access");
 	
 	private String name;
 	
@@ -14,9 +18,5 @@ public enum DataSourceType {
 	
 	public String getName() {
 		return name;
-	}
-	
-	public void setName(String name) {
-		
 	}
 }

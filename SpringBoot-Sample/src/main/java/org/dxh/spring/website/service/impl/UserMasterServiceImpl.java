@@ -16,13 +16,13 @@ public class UserMasterServiceImpl implements UserMasterService{
 	@Autowired
     private UserMasterMapper userMasterMapper;
 	
-	@MyDataSource(DataSourceType.Master)
+	@MyDataSource(DataSourceType.DB_Master)
 	//@Transactional
 	public List<UserMaster> listMasterAll(){
 		return userMasterMapper.selectByExample(null);
 	};
 	
-	@MyDataSource(DataSourceType.Slave)
+	@MyDataSource(DataSourceType.DB_Slave)
 	public List<UserMaster> listSlaveAll(){
 		return userMasterMapper.selectByExample(null);
 	};

@@ -9,8 +9,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
 	@Override
 	protected Object determineCurrentLookupKey() {
-		log.info("データソースは「" + JdbcContextHolder.getDataSource() + "」");
-		return JdbcContextHolder.getDataSource();
+		log.info("データソースは「" + DynamicDataSourceContextHolder.getDataSource() + "」");
+		return DynamicDataSourceContextHolder.getDataSource();
 	}
 
 }
