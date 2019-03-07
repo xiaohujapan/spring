@@ -1,22 +1,20 @@
 package org.dxh.spring.website.utils;
 
-import java.util.Properties;
+import org.dxh.spring.website.constants.RedisSourceType;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class CommonUtil {
 	
-	public static Properties getApplicationProperties() {
-		Properties properties = new Properties();
-		String baseMode = PropertyUtil.getProperty("base.mode");
-		//　本番サーバ
-		if("3".equals(baseMode)) {
-			properties = PropertyUtil.getProperties("properties/application-honban.properties");
-		//　テストサーバ
-		}else if("2".equals(baseMode)) {
-			properties = PropertyUtil.getProperties("properties/application-test.properties");
-		}else {
-			properties = PropertyUtil.getProperties("properties/application-local.properties");
-		}
-		return properties;
+	
+	public static StringRedisTemplate resetNewRedisTemplate(StringRedisTemplate redisTemplate,RedisSourceType redisType) {
+		LettuceConnectionFactory lettueConnectionFactory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
+		redisTemplate.getConnectionFactory();
+		lettueConnectionFactory.setDatabase(redisType.getValue());
+		redisTemplate.setConnectionFactory(lettueConnectionFactory);
+		lettueConnectionFactory.resetConnection();
+		return redisTemplate;
 	}
+	
 	
 }

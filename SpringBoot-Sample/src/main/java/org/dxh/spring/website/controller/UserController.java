@@ -1,9 +1,12 @@
 package org.dxh.spring.website.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.dxh.spring.website.constants.RedisSourceType;
 import org.dxh.spring.website.entity.umajin.UserMaster;
-import org.dxh.spring.website.service.UserMasterService;
+import org.dxh.spring.website.service.mysql.UserMasterService;
+import org.dxh.spring.website.service.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,10 +17,25 @@ public class UserController {
 	@Autowired
 	private UserMasterService userMasterService;
 	
+	@Autowired
+	private RedisService redisService;
+	
     @RequestMapping(value = "/")
     @ResponseBody
     public String hello() {
         return "hello";
+    }
+    
+    @RequestMapping(value = "/printR")
+    @ResponseBody
+    public String showRedis() {
+    	String strResult = "Redis{";
+    	List<Map<Object,Object>> userList =  redisService.getList(RedisSourceType.SESSION_DB);
+    	for(Map<Object,Object> userMap:userList) {
+    		strResult = strResult + "," + userMap.get("loginId");
+    	}
+    	strResult = strResult + "｝";
+        return strResult;
     }
 
     @RequestMapping(value = "/printM")

@@ -1,4 +1,4 @@
-package org.dxh.spring.website.service;
+package org.dxh.spring.website.service.mysql;
 
 import java.util.List;
 

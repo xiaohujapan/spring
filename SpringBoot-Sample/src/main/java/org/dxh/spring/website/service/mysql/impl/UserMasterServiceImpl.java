@@ -1,4 +1,4 @@
-package org.dxh.spring.website.service.impl;
+package org.dxh.spring.website.service.mysql.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.dxh.spring.website.annotation.MyDataSource;
 import org.dxh.spring.website.constants.DataSourceType;
 import org.dxh.spring.website.entity.umajin.UserMaster;
 import org.dxh.spring.website.mapper.umajin.UserMasterMapper;
-import org.dxh.spring.website.service.UserMasterService;
+import org.dxh.spring.website.service.mysql.UserMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
