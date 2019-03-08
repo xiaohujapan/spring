@@ -2,6 +2,8 @@ package org.dxh.spring.website.service.mysql.impl;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.dxh.spring.website.annotation.MyDataSource;
 import org.dxh.spring.website.constants.DataSourceType;
 import org.dxh.spring.website.entity.umajin.UserMaster;
@@ -16,9 +18,14 @@ public class UserMasterServiceImpl implements UserMasterService{
 	@Autowired
     private UserMasterMapper userMasterMapper;
 	
+	@Autowired
+	DataSource dataSource;
+	
 	@MyDataSource(DataSourceType.DB_Master)
 	//@Transactional
-	public List<UserMaster> listMasterAll(){
+	public List<UserMaster> listMasterAll(){	
+		
+		System.out.println(dataSource.toString());
 		return userMasterMapper.selectByExample(null);
 	};
 	

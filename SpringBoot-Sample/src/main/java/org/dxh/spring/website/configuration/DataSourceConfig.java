@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 @MapperScan(basePackages = "org.dxh.spring.website.mapper")
 @Configuration
 public class DataSourceConfig {
@@ -26,13 +28,13 @@ public class DataSourceConfig {
 	@Bean(name = "db_master")
 	@ConfigurationProperties(prefix = "multiple.datasource.master") 
 	public DataSource dataSourceMaster() {
-		return DataSourceBuilder.create().build();
+		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 
 	@Bean(name = "db_slave")
 	@ConfigurationProperties(prefix = "multiple.datasource.slave") 
 	public DataSource dataSourceSlave() {
-		return DataSourceBuilder.create().build();
+		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 	
 	@Bean(name = "db_mail")
