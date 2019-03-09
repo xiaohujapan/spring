@@ -40,13 +40,13 @@ public class DataSourceConfig {
 	@Bean(name = "db_mail")
 	@ConfigurationProperties(prefix = "multiple.datasource.mail") 
 	public DataSource dataSourceMail() {
-		return DataSourceBuilder.create().build();
+		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 	
 	@Bean(name = "db_access")
 	@ConfigurationProperties(prefix = "multiple.datasource.access") 
 	public DataSource dataSourceAccess() {
-		return DataSourceBuilder.create().build();
+		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 	
 	@Bean(name="dynamicDataSource")
