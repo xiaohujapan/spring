@@ -72,12 +72,7 @@
 	    </dependency>
 	    <!-- ↑↑↑JSPサポートの設定↑↑↑ -->
 	    
-  		<!-- ↓↓↓ MyBatisの設定 ↓↓↓　-->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>            
-		    <artifactId>spring-boot-starter-jdbc</artifactId>            
-		</dependency>
-  		
+  		<!-- ↓↓↓ MyBatisの設定 ↓↓↓　-->  		
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
