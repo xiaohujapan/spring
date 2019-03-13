@@ -10,5 +10,11 @@ import org.dxh.spring.website.constants.DataSourceType;
 @Retention(RetentionPolicy.RUNTIME)  
 @Target(ElementType.METHOD) 
 public @interface MyDataSource {
+<<<<<<< HEAD
 	DataSourceType value() default DataSourceType.DB_Master;	
+=======
+
+	DataSourceType value() default DataSourceType.DB_Master;	
+	
+>>>>>>> refs/remotes/origin/master
 }
