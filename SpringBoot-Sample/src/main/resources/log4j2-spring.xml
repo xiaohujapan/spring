@@ -73,7 +73,7 @@
  	     AppenderRef:ConsoleAppender や RollingFileAppender のnameを指定する。複数の Appender にログを出力したい場合は、<AppenferRef> タグを必要な分だけ記述する。
  	     -->
     <Loggers>
-        <Logger name="com.sample.controller" additivity="false" level="debug">
+        <Logger name="org.dxh.spring.website.mapper" additivity="false" level="debug">
             <AppenderRef ref="traceLog" />
             <AppenderRef ref="stdout" />
         </Logger>

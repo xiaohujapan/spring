@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
+
 @RestController
 public class UserController {
 	@Autowired
@@ -51,6 +53,18 @@ public class UserController {
         return strResult;
     }
     
+    @RequestMapping(value = "/updateM")
+    @ResponseBody
+    public String updateMaster() {
+    	String strResult = "Master{";
+    	UserMaster record = new UserMaster();
+    	record.setUser_id(503377);
+    	record.setAge(0);
+    	record.setNickname("業務テスト１２３");
+    	userMasterService.insertUserMaster(record);
+        return strResult;
+    }
+    
     
     @RequestMapping(value = "/printS")
     @ResponseBody
@@ -62,6 +76,15 @@ public class UserController {
 					+ ",userName = " + user.getNickname() +  "]";
 		}		
 		strResult = strResult+ "}";
+        return strResult;
+    }
+    
+    @RequestMapping(value = "/printPage")
+    @ResponseBody
+    public String printPage() {
+    	String strResult = "Master{";
+    	PageInfo<UserMaster> pageInfo = userMasterService.getListByPage(2, 10);
+    	strResult = strResult + pageInfo.toString() + "｝";
         return strResult;
     }
 	
